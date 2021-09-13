@@ -1,0 +1,94 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id   :integer                not null, primary key
+#  name :string                 not null
+
+
+# Table name: enrollments
+#
+#  id   :integer                not null, primary key
+#  course_id :integer           not null
+#  student_id :integer          not null
+
+
+# Table name: courses
+#
+#  id   :integer                not null, primary key
+#  course_name :string          not null
+#  professor_id :integer        not null
+#  prereq_course_id :integer    not null
+
+
+class Enrollment < ApplicationRecord
+
+    belongs_to :course,
+        primary_key: :id,
+        foreign_key: :course_id,
+        class_name: :Course  
+
+
+    belongs_to :student,
+        primary_key: :id,
+        foreign_key: :student_id,
+        class_name: :User
+
+end
+
+
+class Course < ApplicationRecord
+
+    has_many :enrollments,
+        rimary_key: :id,
+        foreign_key: :course_id,
+        class_name: :Enrollment
+
+    has_many :professor,
+        primary_key: :id,
+        foreign_key: :professor_id
+        class_name: :User
+
+    belongs_to :prerequisite,
+        primary_key: :id,
+        foreign_key: :prereq_course_id,
+        class_name: :Course,
+        optional: true
+
+    has_many :child_course,
+        primary_key: :id,
+        foreign_key: :prereq_course_id,
+        class_name: :Course
+        
+
+end
+
+
+class User < ApplicationRecord
+
+    has_many :enrollments,
+        primary_key: :id,
+        foreign_key: :student_id,
+        class_name: :Enrollment
+
+    has_many :courses,
+       primary_key: :id,
+        foreign_key: :professor_id
+        class_name: :Course     
+
+end
+
+
+Ques 2:
+
+(SELECT, DISTINCT, FROM, JOIN, WHERE, GROUP BY, HAVING, LIMIT/OFFSET, ORDER).
+
+1.  FROM
+2.  JOIN
+3.  WHERE
+4.  GROUP BY
+5.  HAVING
+6.  SELECT <-- Needs to select after grouping becasue then it would lose all columns after filtering.
+7.  DISTINCT
+8.  ORDER
+9.  LIMIT/OFFSET
